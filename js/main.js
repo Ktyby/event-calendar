@@ -1,15 +1,16 @@
 const eventsArray = [];
 
-const createEvent = (date, time, eventFunction, eventName) => {
+const getDelay = (date, time) => {
   const currentDate = new Date();
   const eventDate = new Date(`${date}T${time}`);
 
-  const delay = eventDate.getTime() - currentDate.getTime(); 
+  return eventDate.getTime() - currentDate.getTime();
+}
 
-  const eventTimeout = setTimeout(eventFunction, delay);
+const createEvent = (date, time, eventFunction, eventName) => {
+  const eventTimeout = setTimeout(eventFunction, getDelay(date, time));
 
   eventsArray.push({
-    eventDate,
     eventFunction,
     eventName,
     eventTimeout
@@ -21,6 +22,16 @@ const deleteEvent = (eventName) => {
     if (element.eventName === eventName) {
       clearTimeout(element.eventTimeout);
       eventsArray.splice(element, 1);
+    }
+  });
+}
+
+const editEvent = (currentEvent, newEventName, newEventDate, newEventTime) => {
+  eventsArray.forEach((element) => {
+    if (currentEvent === element.eventName) {
+      clearTimeout(element.eventTimeout);
+      element.eventTimeout = setTimeout(element.eventFunction, getDelay(newEventDate, newEventTime));
+      element.eventName = newEventName;
     }
   });
 }
