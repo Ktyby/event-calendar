@@ -15,3 +15,12 @@ const createEvent = (date, time, eventFunction, eventName) => {
     eventTimeout
   });
 }
+
+const deleteEvent = (eventName) => {
+  eventsArray.forEach((element) => {
+    if (element.eventName === eventName) {
+      clearTimeout(element.eventTimeout);
+      eventsArray.splice(element, 1);
+    }
+  });
+}
