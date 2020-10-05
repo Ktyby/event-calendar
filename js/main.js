@@ -35,3 +35,18 @@ const editEvent = (currentEvent, newEventName, newEventDate, newEventTime) => {
     }
   });
 }
+
+const showListEventsFromRange = (range) => {
+  switch (range) {
+    case "День":
+
+    break;
+    case "":
+        
+    break;  
+    
+        
+    default:
+      break;
+  }
+}
