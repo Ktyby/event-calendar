@@ -1,6 +1,6 @@
 const eventsArray = [];
 
-const createEvent = (date, time, eventFunction) => {
+const createEvent = (date, time, eventName, eventFunction) => {
   const currentDate = new Date();
   const eventDate = new Date(`${date}T${time}`);
 
@@ -8,7 +8,8 @@ const createEvent = (date, time, eventFunction) => {
 
   eventsArray.push({
     eventDate,
-    eventFunction
+    eventFunction,
+    eventName
   });
   
   setTimeout(() => {
