@@ -1,0 +1,24 @@
+{
+  "name": "event-calendar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint main.js"
+  },
+  "devDependencies": {
+    "eslint": "7.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ktyby/event-calendar.git"
+  },
+  "author": "Zakhar Kutsko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ktyby/event-calendar/issues"
+  },
+  "homepage": "https://github.com/Ktyby/event-calendar#readme"
+}

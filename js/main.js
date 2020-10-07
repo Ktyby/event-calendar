@@ -2,20 +2,44 @@
 
 const NUMBER_DAY_IN_WEEK = 7;
 const ONE_DAY = 1;
-const NUMBER_SECONDS_IN_DAY = 86400000;
+const NUMBER_MILISECONDS_IN_DAY = 86400000;
+const MAX_DELAY_IN_SET_TIMEOUT = 2147483647;
+const MONTH = "Month";
 const WEEK_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 const eventsArray = [];
 let idValue = 0;
 
 const getDelay = (date, time) => {
   const currentDate = new Date();
   const eventDate = new Date(`${date}T${time}`);
-  console.log(eventDate);
+
   return eventDate.getTime() - currentDate.getTime();
 }
 
-const createEvent = (date, time, eventFunction, eventName, eventType, weekDays) => {
+const createEvent = (date, time, eventFunction, eventName, eventType, weekDays, ) => {
   let eventTimeout;
+  let eventDelay = getDelay(date, time);
+  
+  const getDelayToBeColledToday = () => {
+    const calculateTimeUntilDay = () => {
+      const daysEnd = new Date().setHours(23, 59, 59, 999);
+
+      return daysEnd - currentDate.getTime();
+    }
+
+    const getDayInWhichOccurEvent = () => {
+      setInterval(() => {
+        const currentDate = new Date().toLocaleDateString().split(".").reverse().join("-");
+
+        if (currentDate === date) {
+          setTimeout(eventFunction, getDelay(date, time));
+        }
+      }, NUMBER_MILISECONDS_IN_DAY);
+    }
+
+    setTimeout(getDayInWhichOccurEvent, calculateTimeUntilDay());
+  }
 
   const showEventBySelectedDays = () => {
     const currentDate = new Date();
@@ -30,13 +54,14 @@ const createEvent = (date, time, eventFunction, eventName, eventType, weekDays) 
 
   switch (eventType) {
     case "Once":
-      eventTimeout = setTimeout(eventFunction, getDelay(date, time));
+      eventTimeout = getDelay(date, time) <= MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, getDelay(date, time)) : getDelayToBeColledToday();
     break;
     case "Every day":
-      eventTimeout = setInterval(eventFunction, getDelay(date, time));
+      eventTimeout = setInterval(eventFunction, eventDelay);
     break;
     case "By selected days":
-      eventTimeout = setInterval(showEventBySelectedDays(), NUMBER_SECONDS_IN_DAY);
+      eventDelay = NUMBER_MILISECONDS_IN_DAY;
+      eventTimeout = setInterval(showEventBySelectedDays(), eventDelay);
     break;
   }
 
@@ -48,7 +73,8 @@ const createEvent = (date, time, eventFunction, eventName, eventType, weekDays) 
     eventTimeout,
     eventId,
     eventType,
-    eventDate: date
+    eventDate: date,
+    eventDelay: eventDelay
   });
 
   return `Event create:
@@ -102,10 +128,14 @@ const showListEventsFromRange = (range, date, interval) => {
       console.table(showListInRange(NUMBER_DAY_IN_WEEK));
     break; 
     case "Month": 
-      console.table(showListInRange("Month")); 
+      console.table(showListInRange(MONTH)); 
     break;
     case "Specified interval": 
       console.table(showListInRange(interval)); 
     break;
   }
+}
+
+const createAuxiliaryEvent = (delay, reminedFunction, eventId) => {
+  
 }
