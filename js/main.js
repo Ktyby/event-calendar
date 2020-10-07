@@ -14,8 +14,19 @@ const getDelay = (date, time) => {
   return eventDate.getTime() - currentDate.getTime();
 }
 
-const createEvent = (date, time, eventFunction, eventName, eventType) => {
+const createEvent = (date, time, eventFunction, eventName, eventType, weekDays) => {
   let eventTimeout;
+
+  const showEventBySelectedDays = () => {
+    const currentDate = new Date();
+    const currentWeekDay = WEEK_DAYS[currentDate.getDay()];
+
+    weekDays.forEach((element) => {
+      if (weekDays[element] === currentWeekDay) {
+        eventFunction();
+      }
+    });
+  }
 
   switch (eventType) {
     case "Once":
@@ -25,7 +36,7 @@ const createEvent = (date, time, eventFunction, eventName, eventType) => {
       eventTimeout = setInterval(eventFunction, getDelay(date, time));
     break;
     case "By selected days":
-
+      eventTimeout = setInterval(showEventBySelectedDays(), NUMBER_SECONDS_IN_DAY);
     break;
   }
 
