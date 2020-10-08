@@ -1,20 +1,22 @@
 {
   "env": {
-    "node": true,
-    "es6": true,
-    "mocha": true
+    "es6": true
   },
   "rules": {
-    "semi": 2
-  },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "script",
-    "ecmaFeatures": {
-      "arrowFunctions": true,
-      "binaryLiterals": true,
-      "blockBindings": true,
-      "classes": true
-    }
+    "quotes": [2, "double"],
+    "no-extra-parens": "error",
+    "no-extra-semi": "error",
+    "eqeqeq": "error",
+    "no-alert": "error",
+    "no-eval": "error",
+    "no-multi-spaces": "error",
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "no-multiple-empty-lines": "error",
+    "no-trailing-spaces": ["error", { "ignoreComments": true }],
+    "semi-style": ["error", "last"],
+    "space-before-blocks": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-destructuring": ["error", {"object": true, "array": true}]
   }
 }

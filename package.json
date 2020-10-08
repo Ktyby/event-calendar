@@ -2,11 +2,11 @@
   "name": "event-calendar",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint main.js"
+    "eslint": "eslint js"
   },
   "devDependencies": {
     "eslint": "7.1.0"
