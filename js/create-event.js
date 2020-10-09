@@ -9,22 +9,21 @@
   const isMatches = true;
   let idValue = 0;
 
-  const createEvent = (date, time, eventFunction, eventName, eventType, weekDays) => {
+  const createEvent = (date, time, eventFunction, eventName) => {
     const eventDelay = window.utils.getDelay(date, time);
 
     const eventId = idValue++;
-
-    const eventTimeout = window.utils.getDelay(date, time) <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, window.utils.getDelay(date, time)) : window.utils.getDelayToBeCalledToday(date, time);
+    console.log("some");
+    const eventTimeout = eventDelay <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.utils.getDelayToBeCalledToday(date, time);
 
     eventsArray.push({
       eventFunction,
       eventName,
       eventTimeout,
       eventId,
-      eventType,
       eventDate: date,
       eventTime: time,
-      eventDelay: eventDelay
+      eventDelay
     });
 
     return `Event created:
@@ -85,12 +84,14 @@
     }
   };
 
+  window.createEvent = createEvent;
+
   window.mainModule = {
-    createEvent,
     deleteEvent,
     editEvent,
     showListEventsFromRange,
     eventsArray,
     isMatches,
+    idValue
   };
 })();

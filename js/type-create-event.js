@@ -9,9 +9,13 @@
     "Saturday"
   ];
 
-  const selectTypeCreateEvent = (date, time, eventDelay, eventFunction, eventType, weekDays) => {
+  const selectTypeCreateEvent = (date, time, eventFunction, eventName, eventType, weekDays) => {
+    const eventDelay = window.utils.getDelay(date, time);
     let eventTimeout;
 
+    const eventId = window.mainModule.idValue++;
+
+    console.log("some func");
     const showEventBySelectedDays = () => {
       const currentDate = new Date();
       const currentWeekDay = WEEK_DAYS[currentDate.getDay()];
@@ -25,7 +29,7 @@
 
     switch (eventType) {
       case "Once":
-        eventTimeout = window.utils.getDelay(date, time) <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, window.utils.getDelay(date, time)) : window.utils.getDelayToBeCalledToday(date, time);
+        eventTimeout = eventDelay <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.utils.getDelayToBeCalledToday(date, time);
       break;
       case "Every day":
         eventTimeout = setInterval(eventFunction, eventDelay);
@@ -36,7 +40,7 @@
       break;
     }
 
-    eventsArray.push({
+    window.mainModule.eventsArray.push({
       eventFunction,
       eventName,
       eventTimeout,
@@ -44,7 +48,7 @@
       eventType,
       eventDate: date,
       eventTime: time,
-      eventDelay: eventDelay
+      eventDelay
     });
 
     return `Event created:
@@ -54,5 +58,5 @@
     Event number: ${eventId}`;
   };
 
-  window.selectTypeCreateEvent = selectTypeCreateEvent;
+  window.createEvent = selectTypeCreateEvent;
 })();
