@@ -9,7 +9,7 @@
     "Saturday"
   ];
 
-  const selectTypeCreateEvent = (date, time, eventFunction, eventName, eventType, weekDays) => {
+  const CreateEventWithSelectType = (date, time, eventFunction, eventName, eventType, weekDays) => {
     const eventDelay = window.utils.getDelay(date, time);
     let eventTimeout;
 
@@ -58,5 +58,5 @@
     Event number: ${eventId}`;
   };
 
-  window.createEvent = selectTypeCreateEvent;
+  window.createEvent = CreateEventWithSelectType;
 })();
