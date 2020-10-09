@@ -40,7 +40,5 @@
     });
   };
 
-
-
   window.mainModules.createAuxiliaryEvent = createAuxiliaryEvent;
 })();
