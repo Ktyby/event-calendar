@@ -3,9 +3,9 @@
 (() => {
   const NUMBER_MILISECONDS_IN_DAY = 86400000;
   const MAX_DELAY_IN_SET_TIMEOUT = 2147483647;
+  const currentDate = new Date();
 
   const getDelay = (date, time) => {
-    const currentDate = new Date();
     const eventDate = new Date(`${date}T${time}`);
 
     return eventDate.getTime() - currentDate.getTime();
@@ -31,7 +31,7 @@
     return setTimeout(getDayInWhichOccurEvent, calculateTimeUntilDay());
   };
 
-  window.utils = {
+  window.mainModules.utils = {
     getDelay,
     getDelayToBeCalledToday,
     MAX_DELAY_IN_SET_TIMEOUT

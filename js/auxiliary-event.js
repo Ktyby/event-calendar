@@ -15,31 +15,32 @@
     let eventTimeout;
 
     const detDelayForOneEvent = () => {
-      eventsArray.forEach((element) => {
+      window.mainModules.eventsArray.forEach((element) => {
         if (element.eventId === eventId) {
           auxiliaryEventDelay = element.eventDelay - delay;
-          eventTimeout = auxiliaryEventDelay <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime);
+          eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime);
         }
       });
     };
 
     const detDelayForAllEvent = () => {
-      eventsArray.forEach((element) => {
+      window.mainModules.eventsArray.forEach((element) => {
         auxiliaryEventDelay = element.eventDelay - delay;
-        eventTimeout = auxiliaryEventDelay <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime);
+        eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime);
       });
     };
 
     eventId ? detDelayForOneEvent() : detDelayForAllEvent();
 
-    eventsArray.push({
+    window.mainModules.eventsArray.push({
       auxiliaryEventFunction,
       auxiliaryEventName,
       eventId,
       eventTimeout
     });
-    console.log(eventTimeout);
   };
 
-  window.createAuxiliaryEvent = createAuxiliaryEvent;
+
+
+  window.mainModules.createAuxiliaryEvent = createAuxiliaryEvent;
 })();

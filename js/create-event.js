@@ -1,20 +1,16 @@
 "use strict";
 
-
 (() => {
   const NUMBER_DAY_IN_WEEK = 7;
   const ONE_DAY = 1;
   const MONTH = "Month";
   const eventsArray = [];
-  const isMatches = true;
   let idValue = 0;
 
   const createEvent = (date, time, eventFunction, eventName) => {
-    const eventDelay = window.utils.getDelay(date, time);
-
     const eventId = idValue++;
-    console.log("some");
-    const eventTimeout = eventDelay <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.utils.getDelayToBeCalledToday(date, time);
+
+    const eventTimeout = eventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.getDelayToBeCalledToday(date, time);
 
     eventsArray.push({
       eventFunction,
@@ -47,9 +43,10 @@
       if (currentId !== element.eventId) return;
 
       clearTimeout(element.eventTimeout);
-      element.eventTimeout = setTimeout(element.eventFunction, window.utils.getDelay(newEventDate, newEventTime));
+      element.eventTimeout = setTimeout(element.eventFunction, window.mainModules.utils.getDelay(newEventDate, newEventTime));
       element.eventName = newEventName;
-
+      element.eventDate = newEventDate;
+      element.eventTime = newEventTime;
     });
   };
 
@@ -84,14 +81,12 @@
     }
   };
 
-  window.createEvent = createEvent;
-
-  window.mainModule = {
+  window.mainModules = {
+    createEvent,
     deleteEvent,
     editEvent,
     showListEventsFromRange,
     eventsArray,
-    isMatches,
     idValue
   };
 })();

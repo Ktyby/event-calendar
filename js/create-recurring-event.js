@@ -10,12 +10,11 @@
   ];
 
   const CreateEventWithSelectType = (date, time, eventFunction, eventName, eventType, weekDays) => {
-    const eventDelay = window.utils.getDelay(date, time);
+    let eventDelay = window.mainModules.utils.getDelay(date, time);
     let eventTimeout;
 
-    const eventId = window.mainModule.idValue++;
+    const eventId = window.mainModules.idValue++;
 
-    console.log("some func");
     const showEventBySelectedDays = () => {
       const currentDate = new Date();
       const currentWeekDay = WEEK_DAYS[currentDate.getDay()];
@@ -29,18 +28,18 @@
 
     switch (eventType) {
       case "Once":
-        eventTimeout = eventDelay <= window.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.utils.getDelayToBeCalledToday(date, time);
+        eventTimeout = eventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.utils.getDelayToBeCalledToday(date, time);
       break;
       case "Every day":
         eventTimeout = setInterval(eventFunction, eventDelay);
       break;
       case "By selected days":
-        eventDelay = NUMBER_MILISECONDS_IN_DAY;
+        eventDelay = window.mainModules.utils.NUMBER_MILISECONDS_IN_DAY;
         eventTimeout = setInterval(showEventBySelectedDays(), eventDelay);
       break;
     }
 
-    window.mainModule.eventsArray.push({
+    window.mainModules.eventsArray.push({
       eventFunction,
       eventName,
       eventTimeout,
@@ -58,5 +57,5 @@
     Event number: ${eventId}`;
   };
 
-  window.createEvent = CreateEventWithSelectType;
+  window.mainModules.createEvent = CreateEventWithSelectType;
 })();
