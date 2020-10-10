@@ -9,11 +9,28 @@
     "Saturday"
   ];
 
+  /**
+   * 
+   * @param {string} date 
+   * @param {string} time 
+   * @param {Function} eventFunction 
+   * @param {string} eventName 
+   * @param {string} eventType 
+   * @param {Array} weekDays
+   * @description this function is needed so that the user can create recurring event
+   * @returns {string} 
+   */
+
   const CreateEventWithSelectType = (date, time, eventFunction, eventName, eventType, weekDays) => {
     let eventDelay = window.mainModules.utils.getDelay(date, time);
     let eventTimeout;
 
     const eventId = window.mainModules.idValue++;
+
+    /**
+     * @description this function is used to determine whether eventFunction should be called today
+     * @returns {Function}
+     */
 
     const showEventBySelectedDays = () => {
       const currentDate = new Date();

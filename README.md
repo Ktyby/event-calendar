@@ -24,7 +24,7 @@ newEventTime - new event time.
 
 For delete event, you need running function window.mainModules.deleteEvent(currentId).
 
-currentId - id of the event that the needed edit.
+currentId - id of the event that the needed delete.
 
 For showing list events, you need running function window.mainModules.showListEventsFromRange(range, date, interval).
 

@@ -7,6 +7,15 @@
   const eventsArray = [];
   let idValue = 0;
 
+  /**
+   * 
+   * @param {string} date this is the date, on which the event occurred
+   * @param {string} time this is the time, on which the event occurred
+   * @param {function} eventFunction this is the function, that called when an event occures
+   * @param {string} eventName this is name of the event
+   * @returns {string}
+   */
+
   const createEvent = (date, time, eventFunction, eventName) => {
     const eventId = idValue++;
 
@@ -29,6 +38,11 @@
     Event number: ${eventId}`;
   };
 
+  /**
+   * 
+   * @param {number} currentId id of the event that the needed delete
+   */
+
   const deleteEvent = (currentId) => {
     eventsArray.forEach((element) => {
       if (element.eventId === currentId) {
@@ -37,6 +51,14 @@
       }
     });
   };
+
+  /**
+   * 
+   * @param {number} currentId id of the event that the needed edit
+   * @param {string} newEventName new event name
+   * @param {string} newEventDate new event date
+   * @param {string} newEventTime new event time
+   */
 
   const editEvent = (currentId, newEventName, newEventDate, newEventTime) => {
     eventsArray.forEach((element) => {
@@ -50,7 +72,20 @@
     });
   };
 
+  /**
+   * 
+   * @param {string} range this is the range for displaying the list ("Day", "Week", "Month", "Specified interval")
+   * @param {string} date  date from which to display the list
+   * @param {number} interval this is the interval for displaying the list. This parameter is optional. You should writing it, when range = "Specified interval"
+   */
+
   const showListEventsFromRange = (range, date, interval) => {
+    /**
+     * 
+     * @param {number} dayNumber days number
+     * @returns {eventsArray} return events array from range
+     */
+    
     const showListInRange = (dayNumber) => {
       const startDate = new Date(date);
       const endDate = new Date(startDate);
