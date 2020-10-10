@@ -4,6 +4,7 @@
   const NUMBER_DAY_IN_WEEK = 7;
   const ONE_DAY = 1;
   const MONTH = "Month";
+  const DAY = "Day";
   const eventsArray = [];
   let idValue = 0;
 
@@ -17,6 +18,7 @@
    */
 
   const createEvent = (date, time, eventFunction, eventName) => {
+    let eventDelay = window.mainModules.utils.getDelay(date, time);
     const eventId = idValue++;
 
     const eventTimeout = eventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.getDelayToBeCalledToday(date, time);
@@ -28,7 +30,7 @@
       eventId,
       eventDate: date,
       eventTime: time,
-      eventDelay
+      eventDelay,
     });
 
     return `Event created:
@@ -87,6 +89,7 @@
      */
     
     const showListInRange = (dayNumber) => {
+      const currentWeekDay = new Date().getDay();
       const startDate = new Date(date);
       const endDate = new Date(startDate);
 
@@ -94,7 +97,12 @@
 
       const eventsList = eventsArray.filter((element) => {
         const elementDate = new Date(element.eventDate);
-        return elementDate >= startDate && elementDate <= endDate;
+        
+        if (range === DAY && currentWeekDay === element.eventWeekDay && element.eventType === "By selected days") {
+          return element;
+        }
+
+        return elementDate >= startDate && elementDate <= endDate || elementDate === undefined;
       });
 
       return eventsList;

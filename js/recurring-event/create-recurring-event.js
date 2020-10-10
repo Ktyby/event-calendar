@@ -37,7 +37,7 @@
       const currentWeekDay = WEEK_DAYS[currentDate.getDay()];
 
       weekDays.forEach((element) => {
-        if (weekDays[element] === currentWeekDay) {
+        if (element === currentWeekDay) {
           return eventFunction();
         }
       });
@@ -64,7 +64,8 @@
       eventType,
       eventDate: date,
       eventTime: time,
-      eventDelay
+      eventDelay,
+      eventWeekDay: new Date(`${date}T${time}`).getDay()
     });
 
     return `Event created:
