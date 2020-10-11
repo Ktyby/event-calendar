@@ -57,5 +57,7 @@
     });
   };
 
+  export default createAuxiliaryEvent;
+
   window.mainModules.createAuxiliaryEvent = createAuxiliaryEvent;
 })();
