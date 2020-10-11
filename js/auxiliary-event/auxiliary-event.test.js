@@ -1,5 +1,3 @@
-import createAuxiliaryEvent from "./auxiliary-event";
-
 test("Test function createAuxiliaryEvent", () => {
-  expect(createAuxiliaryEvent()).toBe(10);
+  expect(global.mainModules.createAuxiliaryEvent("minute", 20, console.log("xaxa"), "something")).toBe(10);
 });

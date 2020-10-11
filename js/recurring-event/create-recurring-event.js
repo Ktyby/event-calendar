@@ -10,15 +10,14 @@
   ];
 
   /**
-   * 
+   * @description this function is needed so that the user can create recurring event
    * @param {string} date 
    * @param {string} time 
    * @param {Function} eventFunction 
    * @param {string} eventName 
    * @param {string} eventType 
    * @param {Array} weekDays
-   * @description this function is needed so that the user can create recurring event
-   * @returns {string} 
+   * @returns {string} return string with event description
    */
 
   const CreateEventWithSelectType = (date, time, eventFunction, eventName, eventType, weekDays) => {
@@ -27,13 +26,26 @@
 
     const eventId = window.mainModules.idValue++;
 
+    const showDailyEvent = () => {
+      return setTimeout(() => {
+        eventDelay = window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT;
+        eventFunction();
+        setInterval(eventFunction, eventDelay);
+      }, eventDelay);
+    }
+
     /**
      * @description this function is used to determine whether eventFunction should be called today
-     * @returns {Function}
+     * @returns {Function} returns timeout
      */
 
-    const showEventBySelectedDays = () => {
+    const showEventsBySelectedDays = () => {
       const currentWeekDay = new Date().getDay();
+
+      /**
+       * @description this function return delay before function which will called in specific weekday
+       * @returns {Function} return interval before next day
+       */
 
       const getWeekDayInWhichOccurEvent = () => {
         return setInterval(() => {
@@ -62,10 +74,10 @@
         eventTimeout = eventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.utils.getDelayToBeCalledToday(date, time);
       break;
       case "Every day":
-        eventTimeout = setInterval(eventFunction, eventDelay);
+        eventTimeout = showDailyEvent();
       break;
       case "By selected days":
-        eventTimeout = showEventBySelectedDays();
+        eventTimeout = showEventsBySelectedDays();
       break;
     }
 

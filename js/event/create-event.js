@@ -9,16 +9,16 @@
   let idValue = 0;
 
   /**
-   * 
-   * @param {string} date this is the date, on which the event occurred
-   * @param {string} time this is the time, on which the event occurred
-   * @param {function} eventFunction this is the function, that called when an event occures
-   * @param {string} eventName this is name of the event
-   * @returns {string}
+   * @description this function create event
+   * @param {string} date date, on which the event occurred
+   * @param {string} time time, on which the event occurred
+   * @param {function} eventFunction function, that called when an event occures
+   * @param {string} eventName name of the event
+   * @returns {string} return string with event description
    */
 
   const createEvent = (date, time, eventFunction, eventName) => {
-    let eventDelay = window.mainModules.utils.getDelay(date, time);
+    const eventDelay = window.mainModules.utils.getDelay(date, time);
     const eventId = idValue++;
 
     const eventTimeout = eventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.getDelayToBeCalledToday(date, time);
@@ -41,21 +41,21 @@
   };
 
   /**
-   * 
+   * @description this function delete event
    * @param {number} currentId id of the event that the needed delete
    */
 
   const deleteEvent = (currentId) => {
     eventsArray.forEach((element) => {
-      if (element.eventId === currentId) {
-        clearTimeout(element.eventTimeout);
-        eventsArray.splice(element, 1);
-      }
+      if (element.eventId !== currentId) return
+        
+      clearTimeout(element.eventTimeout);
+      eventsArray.splice(element, 1);
     });
   };
 
   /**
-   * 
+   * @description this function edit event
    * @param {number} currentId id of the event that the needed edit
    * @param {string} newEventName new event name
    * @param {string} newEventDate new event date
@@ -75,7 +75,7 @@
   };
 
   /**
-   * 
+   * @description this function show events list
    * @param {string} range this is the range for displaying the list ("Day", "Week", "Month", "Specified interval")
    * @param {string} date  date from which to display the list
    * @param {number} interval this is the interval for displaying the list. This parameter is optional. You should writing it, when range = "Specified interval"
@@ -83,13 +83,13 @@
 
   const showListEventsFromRange = (range, date, interval) => {
     /**
-     * 
+     * @description this function return events array
      * @param {number} dayNumber days number
      * @returns {eventsArray} return events array from range
      */
-    
+
     const showListInRange = (dayNumber) => {
-      const eventWeekDay = new Date(date).getDay(); 
+      const eventWeekDay = new Date(date).getDay();
       const startDate = new Date(date);
       const endDate = new Date(startDate);
 
@@ -98,7 +98,7 @@
       const eventsList = eventsArray.filter((element) => {
         const elementDate = new Date(element.eventDate);
 
-        return (elementDate >= startDate && elementDate <= endDate) || (element.eventWeekDays[eventWeekDay] === window.mainModules.WEEK_DAYS[eventWeekDay]) || (element.eventType === "By selected days");
+        return elementDate >= startDate && elementDate <= endDate || element.eventWeekDays[eventWeekDay] === window.mainModules.WEEK_DAYS[eventWeekDay] || element.eventType === "By selected days";
       });
 
       return eventsList;

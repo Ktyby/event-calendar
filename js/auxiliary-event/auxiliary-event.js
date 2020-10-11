@@ -10,7 +10,7 @@
   };
 
   /**
-   * 
+   * @description this function is needed so that the user can create auxiliary event
    * @param {string} delayType type of delay
    * @param {number} numberDelay number unit of delay
    * @param {Function} auxiliaryEventFunction event function
@@ -31,7 +31,7 @@
       window.mainModules.eventsArray.forEach((element) => {
         if (element.eventId === eventId) {
           auxiliaryEventDelay = element.eventDelay - delay;
-          eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime);
+          eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime, auxiliaryEventDelay);
         }
       });
     };
@@ -43,7 +43,7 @@
     const detDelayForAllEvent = () => {
       window.mainModules.eventsArray.forEach((element) => {
         auxiliaryEventDelay = element.eventDelay - delay;
-        eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime);
+        eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime, auxiliaryEventDelay);
       });
     };
 
@@ -53,11 +53,10 @@
       auxiliaryEventFunction,
       auxiliaryEventName,
       eventId,
-      eventTimeout
+      eventTimeout,
+      auxiliaryEventDelay
     });
   };
-
-  export default createAuxiliaryEvent;
 
   window.mainModules.createAuxiliaryEvent = createAuxiliaryEvent;
 })();
