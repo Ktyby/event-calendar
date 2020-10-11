@@ -33,15 +33,29 @@
      */
 
     const showEventBySelectedDays = () => {
-      const currentDate = new Date();
-      const currentWeekDay = WEEK_DAYS[currentDate.getDay()];
+      const currentWeekDay = new Date().getDay();
 
-      weekDays.forEach((element) => {
-        if (element === currentWeekDay) {
-          return eventFunction();
-        }
-      });
-    };
+      const getWeekDayInWhichOccurEvent = () => {
+        return setInterval(() => {
+          const currentDate = new Date();
+          const stringCurrentDate = currentDate.toLocaleDateString().split(".").reverse().join("-");
+          const currentWeekDay = WEEK_DAYS[currentDate.getDay()];
+
+          weekDays.forEach((element) => {
+            if (element === currentWeekDay) {
+              setTimeout(eventFunction, window.mainModules.utils.getDelay(stringCurrentDate, time));
+            }
+          });
+        }, NUMBER_MILISECONDS_IN_DAY);
+      }
+
+      if (weekDays[currentWeekDay] === WEEK_DAYS[currentWeekDay]) {
+        setTimeout(eventFunction, window.mainModules.utils.getDelay(date, time));
+        return setTimeout(getWeekDayInWhichOccurEvent, window.mainModules.utils.calculateTimeUntilDay());
+      }
+
+      return setTimeout(getWeekDayInWhichOccurEvent, window.mainModules.utils.calculateTimeUntilDay());
+    }
 
     switch (eventType) {
       case "Once":
@@ -51,8 +65,7 @@
         eventTimeout = setInterval(eventFunction, eventDelay);
       break;
       case "By selected days":
-        eventDelay = window.mainModules.utils.NUMBER_MILISECONDS_IN_DAY;
-        eventTimeout = setInterval(showEventBySelectedDays(), eventDelay);
+        eventTimeout = showEventBySelectedDays();
       break;
     }
 
@@ -65,7 +78,7 @@
       eventDate: date,
       eventTime: time,
       eventDelay,
-      eventWeekDay: new Date(`${date}T${time}`).getDay()
+      eventWeekDays: weekDays
     });
 
     return `Event created:
@@ -75,5 +88,6 @@
     Event number: ${eventId}`;
   };
 
+  window.mainModules.WEEK_DAYS = WEEK_DAYS;
   window.mainModules.createEvent = CreateEventWithSelectType;
 })();

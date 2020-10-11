@@ -20,6 +20,18 @@
   };
 
   /**
+  * @description this function is needed for getting day end
+  */
+
+  const calculateTimeUntilDay = () => {
+    const currentDate = new Date();
+    const nextDay = new Date().setDate(new Date().getDate() + 1);
+    const dayEnd = new Date(nextDay).setHours(0, 0, 0, 0);
+
+    return dayEnd - currentDate.getTime();
+  };   
+
+  /**
    * 
    * @param {date} date this is date when event occurs
    * @param {time} time this is time when event occurs
@@ -27,18 +39,6 @@
    */
 
   const getDelayToBeCalledToday = (date, time) => {
-    const currentDate = new Date();
-
-    /**
-     * @description this function is needed for getting day end
-     */
-
-    const calculateTimeUntilDay = () => {
-      const dayEnd = new Date().setHours(23, 59, 59, 999);
-
-      return dayEnd - currentDate.getTime();
-    };
-
     /**
      * @description this function is needed for getting event day and time
      */
@@ -59,6 +59,7 @@
   window.mainModules.utils = {
     getDelay,
     getDelayToBeCalledToday,
+    calculateTimeUntilDay,
     MAX_DELAY_IN_SET_TIMEOUT
   };
 })();

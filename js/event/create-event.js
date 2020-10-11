@@ -89,7 +89,7 @@
      */
     
     const showListInRange = (dayNumber) => {
-      const currentWeekDay = new Date().getDay();
+      const eventWeekDay = new Date(date).getDay(); 
       const startDate = new Date(date);
       const endDate = new Date(startDate);
 
@@ -97,12 +97,8 @@
 
       const eventsList = eventsArray.filter((element) => {
         const elementDate = new Date(element.eventDate);
-        
-        if (range === DAY && currentWeekDay === element.eventWeekDay && element.eventType === "By selected days") {
-          return element;
-        }
 
-        return elementDate >= startDate && elementDate <= endDate || elementDate === undefined;
+        return (elementDate >= startDate && elementDate <= endDate) || (element.eventWeekDays[eventWeekDay] === window.mainModules.WEEK_DAYS[eventWeekDay]) || (element.eventType === "By selected days");
       });
 
       return eventsList;
