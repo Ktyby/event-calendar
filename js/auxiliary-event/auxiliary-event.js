@@ -30,8 +30,9 @@
     const detDelayForOneEvent = () => {
       window.mainModules.eventsArray.forEach((element) => {
         if (element.eventId === eventId) {
-          auxiliaryEventDelay = element.eventDelay - delay;
-          eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime, auxiliaryEventDelay);
+          console.log(element.eventId, eventId);
+          auxiliaryEventDelay = +new Date(element.eventDelay - delay) - +new Date();
+          eventTimeout = auxiliaryEventDelay <= window.mainModules.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.getDelayToBeCalledToday(element.eventDate, element.eventTime, auxiliaryEventDelay);
         }
       });
     };
@@ -42,12 +43,12 @@
 
     const detDelayForAllEvent = () => {
       window.mainModules.eventsArray.forEach((element) => {
-        auxiliaryEventDelay = element.eventDelay - delay;
-        eventTimeout = auxiliaryEventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.utils.getDelayToBeCalledToday(element.eventDate, element.eventTime, auxiliaryEventDelay);
+        auxiliaryEventDelay = +new Date(element.eventDelay - delay) - +new Date();
+        eventTimeout = auxiliaryEventDelay <= window.mainModules.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(auxiliaryEventFunction, auxiliaryEventDelay) : window.mainModules.getDelayToBeCalledToday(element.eventDate, element.eventTime, auxiliaryEventDelay);
       });
     };
 
-    eventId ? detDelayForOneEvent() : detDelayForAllEvent();
+    eventId === undefined ? detDelayForAllEvent() : detDelayForOneEvent();
 
     window.mainModules.eventsArray.push({
       auxiliaryEventFunction,

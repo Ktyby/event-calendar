@@ -20,16 +20,17 @@
    * @returns {string} return string with event description
    */
 
-  const CreateEventWithSelectType = (date, time, eventFunction, eventName, eventType, weekDays) => {
-    let eventDelay = window.mainModules.utils.getDelay(date, time);
+  const createEventWithSelectType = (date, time, eventFunction, eventName, eventType, weekDays) => {
+    let eventDelay = window.mainModules.getDelay(date, time);
     let eventTimeout;
 
     const eventId = window.mainModules.idValue++;
 
     const showDailyEvent = () => {
       return setTimeout(() => {
-        eventDelay = window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT;
         eventFunction();
+        eventDelay = window.mainModules.NUMBER_MILISECONDS_IN_DAY;
+        console.log(eventDelay);
         setInterval(eventFunction, eventDelay);
       }, eventDelay);
     }
@@ -55,23 +56,23 @@
 
           weekDays.forEach((element) => {
             if (element === currentWeekDay) {
-              setTimeout(eventFunction, window.mainModules.utils.getDelay(stringCurrentDate, time));
+              setTimeout(eventFunction, window.mainModules.getDelay(stringCurrentDate, time));
             }
           });
         }, NUMBER_MILISECONDS_IN_DAY);
       }
 
       if (weekDays[currentWeekDay] === WEEK_DAYS[currentWeekDay]) {
-        setTimeout(eventFunction, window.mainModules.utils.getDelay(date, time));
-        return setTimeout(getWeekDayInWhichOccurEvent, window.mainModules.utils.calculateTimeUntilDay());
+        setTimeout(eventFunction, window.mainModules.getDelay(date, time));
+        return setTimeout(getWeekDayInWhichOccurEvent, window.mainModules.calculateTimeUntilDay());
       }
 
-      return setTimeout(getWeekDayInWhichOccurEvent, window.mainModules.utils.calculateTimeUntilDay());
+      return setTimeout(getWeekDayInWhichOccurEvent, window.mainModules.calculateTimeUntilDay());
     }
 
     switch (eventType) {
       case "Once":
-        eventTimeout = eventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.utils.getDelayToBeCalledToday(date, time);
+        eventTimeout = eventDelay <= window.mainModules.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.getDelayToBeCalledToday(date, time);
       break;
       case "Every day":
         eventTimeout = showDailyEvent();
@@ -89,7 +90,7 @@
       eventType,
       eventDate: date,
       eventTime: time,
-      eventDelay,
+      eventDelay: +new Date(`${date}T${time}`),
       eventWeekDays: weekDays
     });
 
@@ -100,6 +101,9 @@
     Event number: ${eventId}`;
   };
 
-  window.mainModules.WEEK_DAYS = WEEK_DAYS;
-  window.mainModules.createEvent = CreateEventWithSelectType;
+  window.mainModules = {
+    ...mainModules,
+    WEEK_DAYS,
+    createEvent: createEventWithSelectType
+  }
 })();

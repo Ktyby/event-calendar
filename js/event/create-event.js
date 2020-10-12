@@ -1,7 +1,7 @@
 "use strict";
 
 (() => {
-  const NUMBER_DAY_IN_WEEK = 7;
+  const NUMBER_DAY_IN_WEEK = 6;
   const ONE_DAY = 1;
   const MONTH = "Month";
   const DAY = "Day";
@@ -18,10 +18,10 @@
    */
 
   const createEvent = (date, time, eventFunction, eventName) => {
-    const eventDelay = window.mainModules.utils.getDelay(date, time);
+    const eventDelay = window.mainModules.getDelay(date, time);
     const eventId = idValue++;
 
-    const eventTimeout = eventDelay <= window.mainModules.utils.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.getDelayToBeCalledToday(date, time);
+    const eventTimeout = eventDelay <= window.mainModules.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(eventFunction, eventDelay) : window.mainModules.getDelayToBeCalledToday(date, time);
 
     eventsArray.push({
       eventFunction,
@@ -47,10 +47,12 @@
 
   const deleteEvent = (currentId) => {
     eventsArray.forEach((element) => {
-      if (element.eventId !== currentId) return
-        
-      clearTimeout(element.eventTimeout);
-      eventsArray.splice(element, 1);
+      if (element.eventId === currentId) {
+        clearInterval(element.eventTimeout);
+        clearTimeout(element.eventTimeout);
+        console.log(element, eventsArray.splice(element.eventId, 1));
+        eventsArray.splice(element, 1);
+      }
     });
   };
 
@@ -65,9 +67,10 @@
   const editEvent = (currentId, newEventName, newEventDate, newEventTime) => {
     eventsArray.forEach((element) => {
       if (currentId !== element.eventId) return;
-
+      if (element.eventType !== "Once") return console.log("You can edit once 'Once' events");
+      
       clearTimeout(element.eventTimeout);
-      element.eventTimeout = setTimeout(element.eventFunction, window.mainModules.utils.getDelay(newEventDate, newEventTime));
+      element.eventTimeout = setTimeout(element.eventFunction, window.mainModules.getDelay(newEventDate, newEventTime));
       element.eventName = newEventName;
       element.eventDate = newEventDate;
       element.eventTime = newEventTime;
@@ -95,10 +98,17 @@
 
       range === MONTH ? endDate.setMonth(startDate.getMonth() + 1) : endDate.setDate(startDate.getDate() + dayNumber);
 
-      const eventsList = eventsArray.filter((element) => {
+      const eventsList = window.mainModules.eventsArray.filter((element) => {
         const elementDate = new Date(element.eventDate);
+        if (element.eventType === "By selected days") {
+          return (element.eventWeekDays.includes(window.mainModules.WEEK_DAYS[eventWeekDay]));
+        } else {
+          if (element.eventType === "Every day") {
+            return element
+          }
+        }
 
-        return elementDate >= startDate && elementDate <= endDate || element.eventWeekDays[eventWeekDay] === window.mainModules.WEEK_DAYS[eventWeekDay] || element.eventType === "By selected days";
+        return (elementDate >= startDate && elementDate <= endDate);
       });
 
       return eventsList;
@@ -121,6 +131,7 @@
   };
 
   window.mainModules = {
+    ...mainModules,
     createEvent,
     deleteEvent,
     editEvent,

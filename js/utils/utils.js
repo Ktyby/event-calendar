@@ -57,10 +57,11 @@
     return setTimeout(getDayInWhichOccurEvent, calculateTimeUntilDay());
   };
 
-  window.mainModules.utils = {
+  window.mainModules = {
     getDelay,
     getDelayToBeCalledToday,
     calculateTimeUntilDay,
-    MAX_DELAY_IN_SET_TIMEOUT
+    MAX_DELAY_IN_SET_TIMEOUT,
+    NUMBER_MILISECONDS_IN_DAY
   };
 })();
