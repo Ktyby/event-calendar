@@ -5,6 +5,11 @@
   const ONE_DAY = 1;
   const MONTH = "Month";
   const DAY = "Day";
+  const WEEK = "Week";
+  const SPECIFIED_INTERVAL = "Specified interval";
+  const ONCE = "Once";
+  const EVERY_DAY = "Every day";
+  const BY_SELECTED_DAYS = "By selected days";
   const eventsArray = [];
   let idValue = 0;
 
@@ -46,12 +51,11 @@
    */
 
   const deleteEvent = (currentId) => {
-    eventsArray.forEach((element) => {
+    eventsArray.forEach((element, index) => {
       if (element.eventId === currentId) {
         clearInterval(element.eventTimeout);
         clearTimeout(element.eventTimeout);
-        console.log(element, eventsArray.splice(element.eventId, 1));
-        eventsArray.splice(element, 1);
+        eventsArray.splice(index, 1);
       }
     });
   };
@@ -67,13 +71,15 @@
   const editEvent = (currentId, newEventName, newEventDate, newEventTime) => {
     eventsArray.forEach((element) => {
       if (currentId !== element.eventId) return;
-      if (element.eventType !== "Once") return console.log("You can edit once 'Once' events");
+      if (element.eventType !== ONCE) return console.log("You can edit once 'Once' events");
+      
+      let eventDelay = window.mainModules.getDelay(newEventDate, newEventTime);
       
       clearTimeout(element.eventTimeout);
-      element.eventTimeout = setTimeout(element.eventFunction, window.mainModules.getDelay(newEventDate, newEventTime));
       element.eventName = newEventName;
       element.eventDate = newEventDate;
       element.eventTime = newEventTime;
+      element.eventTimeout = eventDelay <= window.mainModules.MAX_DELAY_IN_SET_TIMEOUT ? setTimeout(element.eventFunction, element.eventDelay) : window.mainModules.getDelayToBeCalledToday(newEventDate, newEventTime);
     });
   };
 
@@ -96,16 +102,21 @@
       const startDate = new Date(date);
       const endDate = new Date(startDate);
 
-      range === MONTH ? endDate.setMonth(startDate.getMonth() + 1) : endDate.setDate(startDate.getDate() + dayNumber);
+      if (range === MONTH) {
+        endDate.setMonth(startDate.getMonth() + 1) 
+      } else {
+        endDate.setDate(startDate.getDate() + dayNumber)
+      }
 
       const eventsList = window.mainModules.eventsArray.filter((element) => {
         const elementDate = new Date(element.eventDate);
-        if (element.eventType === "By selected days") {
-          return (element.eventWeekDays.includes(window.mainModules.WEEK_DAYS[eventWeekDay]));
-        } else {
-          if (element.eventType === "Every day") {
-            return element
+        if (element.eventType === BY_SELECTED_DAYS) {
+          if (range === DAY) {
+            return element.eventWeekDays.includes(window.mainModules.WEEK_DAYS[eventWeekDay])
           }
+          return range === MONTH || range === WEEK || range === SPECIFIED_INTERVAL ? element : element.eventWeekDays.includes(window.mainModules.WEEK_DAYS[eventWeekDay]);
+        } else if (element.eventType === EVERY_DAY) {
+          return element
         }
 
         return (elementDate >= startDate && elementDate <= endDate);
@@ -115,16 +126,16 @@
     };
 
     switch (range) {
-      case "Day":
+      case DAY:
         console.table(showListInRange(ONE_DAY));
       break;
-      case "Week":
+      case WEEK:
         console.table(showListInRange(NUMBER_DAY_IN_WEEK));
       break;
-      case "Month":
+      case MONTH:
         console.table(showListInRange(MONTH));
       break;
-      case "Specified interval":
+      case SPECIFIED_INTERVAL:
         console.table(showListInRange(interval));
       break;
     }

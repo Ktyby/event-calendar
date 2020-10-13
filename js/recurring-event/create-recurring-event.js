@@ -30,7 +30,6 @@
       return setTimeout(() => {
         eventFunction();
         eventDelay = window.mainModules.NUMBER_MILISECONDS_IN_DAY;
-        console.log(eventDelay);
         setInterval(eventFunction, eventDelay);
       }, eventDelay);
     }

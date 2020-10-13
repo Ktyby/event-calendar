@@ -22,6 +22,8 @@ newEventName - new event name;
 newEventDate - new event date;
 newEventTime - new event time.
 
+You can edit only "Once" events.
+
 For delete event, you need running function window.mainModules.deleteEvent(currentId).
 
 currentId - id of the event that the needed delete.
